@@ -118,23 +118,29 @@ namespace HomeAmationDataLoggerNetmfAzure
             Thread temperatureThread = new Thread(TemperatureThread);   // Update the temperature once per minute
             temperatureThread.Start();
 
-
+            // [{"id":1,"DataLoggerName":"Ben Walkin","Time":"2013-02-19T18:39:51.733Z",
+            //[{"id":1,"DataLoggerName":"JHANetDuino","Time":"2013-02-19T16:46:55.205K",
 
             // SetTheClock();                                              // Set system time from NTP
 
             //Thread updateSystemTimeThread = new Thread(UpdateSystemTimeThread); // Update system time once per day
             //updateSystemTimeThread.Start();
 
+            JDate();
+            var a = 1;
+
 
             // Initializes the time client
-            SNTP_Client TimeClient = new SNTP_Client(new IntegratedSocket("time-a.nist.gov", 123));
+            // SNTP_Client TimeClient = new SNTP_Client(new IntegratedSocket("time-a.nist.gov", 123));
             // ExtendedTimeZone.SetTimeZone(TimeZoneId.Arizona); // not supported
-            TimeClient.Synchronize();
+            // TimeClient.Synchronize();
 
-            // Displays the time in three ways:
-            Debug.Print("Amount of seconds since 1 jan. 1900: " + TimeClient.Timestamp.ToString());
-            Debug.Print("UTC time: " + TimeClient.UTCDate.ToString());
-            Debug.Print("Local time: " + TimeClient.LocalDate.ToString());
+
+
+            //// Displays the time in three ways:
+            //Debug.Print("Amount of seconds since 1 jan. 1900: " + TimeClient.Timestamp.ToString());
+            //Debug.Print("UTC time: " + TimeClient.UTCDate.ToString());
+            //Debug.Print("Local time: " + TimeClient.LocalDate.ToString());
 
             Thread updateAzureThread = new Thread(AzureUpdateThread);   // Update Azure mobile services every 5 minutes
             updateAzureThread.Start();
@@ -221,19 +227,26 @@ namespace HomeAmationDataLoggerNetmfAzure
             {
                 string strTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
                 // DateTime dateTimeMinusMilliSeconds = DateTime.Parse(strTime); // Apparently no DateTime.Parse
-                Debug.Print(strTime); 
+                Debug.Print(strTime);
 
+                // http://msdn.microsoft.com/en-us/library/system.datetime.utcnow.aspx
+                var saveNow = DateTime.UtcNow; 
+                var myDt = DateTime.SpecifyKind(saveNow, DateTimeKind.Utc);
+                
                 HistoricalTemperatureDataForAzure htdForAzure = new HistoricalTemperatureDataForAzure()
                 {
                     DataLoggerName = DataLoggerName,
                     // Time = DateTime.Now,
-                    Time = DateTime.UtcNow,
+                    // Time = DateTime.UtcNow,
+                    // Time = myDt,
+                    Time = JDate(),
+
                     // Time = dateTimeMinusMilliSeconds,
                     Temperature0 = temperature0,
                     Temperature1 = 0
                 };
-                Debug.Print(htdForAzure.Time.ToString()); 
-                var json = MobileService.GetTable("HistoricalTemperatureData").Insert(htdForAzure);
+                Debug.Print(htdForAzure.Time.ToString());
+                var json = MobileService.GetTable("HistoricalTemperatureData0").Insert(htdForAzure);
                 Thread.Sleep(5 * 60 * 1000);
             }
         }
@@ -247,15 +260,15 @@ namespace HomeAmationDataLoggerNetmfAzure
         //    }
         //}
 
-        //private static void SetTheClock()
-        //{
-        //    // http://www.tinyclr.com/codeshare/entry/404
-        //    var adjustTz = new System.TimeSpan(0, 9, 0, 0);
-        //    // I'm in Arizona where they don't adjust DST, when I go back to Spokane this will need more elegance
-        //    // Utility.SetLocalTime(Rodaw.Netmf.Util.GetNetworkTime() - adjustTz); //Set the RTC
-        //    // Utility.SetLocalTime(Util.GetNetworkTime() - adjustTz); //Set the RTC
-        //    Debug.Print("DateTime.Now... " + DateTime.Now.ToString());
-        //}
+        private static void SetTheClock()
+        {
+            // http://www.tinyclr.com/codeshare/entry/404
+            var adjustTz = new System.TimeSpan(0, 9, 0, 0);
+            // I'm in Arizona where they don't adjust DST, when I go back to Spokane this will need more elegance
+            // Utility.SetLocalTime(Rodaw.Netmf.Util.GetNetworkTime() - adjustTz); //Set the RTC
+            Utility.SetLocalTime(Util.GetNetworkTime() - adjustTz); //Set the RTC
+            Debug.Print("DateTime.Now... " + DateTime.Now.ToString());
+        }
 
         static string ReturnSummaryDataXml()
         {
@@ -283,6 +296,24 @@ namespace HomeAmationDataLoggerNetmfAzure
             char[] cc = UTF8Encoding.UTF8.GetChars(byteArray);
             string str = new string(cc);
             return str;
+        }
+
+        static DateTime JDate()
+        {
+            var strDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+            var strDay = DateTime.Now.ToString("dd");
+            var strMonth = DateTime.Now.ToString("MM");
+            var strYear =  DateTime.UtcNow.ToString("yyyy");
+
+            int Year = Convert.ToInt32(strYear);
+            int Month = Convert.ToInt32(strMonth);
+            int Day = Convert.ToInt32(strDay);
+
+            DateTime WonderDate = new DateTime(Year, Month, Day, 14, 15, 16, 0);
+            // Debug.Print(a.ToString()); 
+            // return WonderDate.ToUniversalTime();
+            return WonderDate; 
+            // return DateTime.UtcNow.ToUniversalTime(); 
         }
     }
 }

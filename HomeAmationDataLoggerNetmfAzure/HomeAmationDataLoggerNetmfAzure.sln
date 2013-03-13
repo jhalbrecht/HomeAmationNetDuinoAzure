@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeAmationDataLoggerNetmfAzure", "HomeAmationDataLoggerNetmfAzure\HomeAmationDataLoggerNetmfAzure.csproj", "{EAEA9351-476F-4A7A-8543-92FFF2727D58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WonderDate", "WonderDate\WonderDate.csproj", "{D0EF1123-0798-4C06-841A-B79176A26D7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{EAEA9351-476F-4A7A-8543-92FFF2727D58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAEA9351-476F-4A7A-8543-92FFF2727D58}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EAEA9351-476F-4A7A-8543-92FFF2727D58}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D0EF1123-0798-4C06-841A-B79176A26D7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0EF1123-0798-4C06-841A-B79176A26D7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0EF1123-0798-4C06-841A-B79176A26D7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0EF1123-0798-4C06-841A-B79176A26D7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
