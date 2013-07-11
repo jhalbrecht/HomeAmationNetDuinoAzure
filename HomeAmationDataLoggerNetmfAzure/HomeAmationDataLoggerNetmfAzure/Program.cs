@@ -27,7 +27,7 @@ namespace HomeAmationDataLoggerNetmfAzure
 
         public static MobileServiceClient MobileService = new MobileServiceClient(
             new Uri("http://homeamationnetmf.azure-mobile.net/"),
-            "QYJSjbMXAmEIdlWJdzEYLYCujoENkj23"
+            "BlahBlahBlahYadaYadaYada"
             );
 
         // static SingleLed singleLed0 = new SingleLed(new OutputPort(Pins.ONBOARD_LED, true));
